@@ -20,6 +20,19 @@
             
         </style>
 
+<script>
+function load_annotation_body( asset_url )
+{
+    console.log("enter load_annotation_body");
+    target_element = document.getElementById("inline_entry");
+    if (target_element != undefined)
+    {   
+        target_element.setAttribute('url', asset_url);
+    }    
+}
+
+x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"); }
+</script>
 </head>
 <body>
         <div class="canvas-width" style="text-align:center">Prototype Manifest Loader</div>
@@ -31,7 +44,7 @@
         <viewpoint position="0 0 10" orientation="0 0 1 0" 
 	     centerOfRotation="0 0 0" ></viewpoint>
 	     <transform scale="1 1 1">
-	    <inline url='"https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"'></inline>
+	    <inline id='inline_entry' url=''></inline>
 	    </transform>
     </scene>
         </x3d> 
