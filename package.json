@@ -4,7 +4,7 @@
   "description": "This is a static template with no bundling",
   "main": "three_d_manifest_loader.html",
   "scripts": {
-    "start": "serve three_d_manifest_loader.html",
+    "start": "serve",
     "build": "echo This is a static template, there is no bundler or bundling involved!"
   },
   "repository": {
