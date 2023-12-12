@@ -53,6 +53,17 @@ function fit_view()
         
 }
 
+function load_manifest()
+{
+    manifest_url_field = document.getElementById("manifest_url");
+    var manifest_url = manifest_url_field.value;
+    fetch(manifest_url).then( response => response.json() )
+            .then(manifest_obj => {
+                console.log("received " + manifest_obj.type )
+                });
+            
+}
+
 x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"); }
 </script>
 </head>
@@ -71,7 +82,14 @@ x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections
     </scene>
         </x3d> 
         </div>
-        
+
+<div>  
+<input style="width:100%;" type="url" id="manifest_url" 
+        value="https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif"/>
+</div>  
+<div>  
+ <button type="button" onclick="load_manifest()">Load Manifest</button> 
+ </div>        
         
 </body>
 </html>
