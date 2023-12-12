@@ -4,7 +4,7 @@
     <title>IIIF 3D Manifest Loader</title>
         <script type='text/javascript' charset="UTF-8" src='https://x3dom.org/release/x3dom-full.js'> </script>         
         <link rel='stylesheet' type='text/css' href='https://x3dom.org/release/x3dom.css'></link> 
-        
+        <script type='text/javascript' charset="UTF-8" src='manifest_3d_tools.js'> </script>  
         <style>
             body {font-size:18pt}
             
@@ -59,12 +59,16 @@ function load_manifest()
     var manifest_url = manifest_url_field.value;
     fetch(manifest_url).then( response => response.json() )
             .then(manifest_obj => {
-                console.log("received " + manifest_obj.type )
+                console.log("received " + manifest_obj.type );
+                anno = SearchForModel( manifest_obj );
+                model_url = anno.body.id;
+                console.log("loading " + model_url);
+                load_annotation_body( model_url );
                 });
             
 }
 
-x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"); }
+//x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"); }
 </script>
 </head>
 <body>
