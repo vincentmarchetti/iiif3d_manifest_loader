@@ -6,7 +6,7 @@
         <link rel='stylesheet' type='text/css' href='https://x3dom.org/release/x3dom.css'></link> 
         <script type='text/javascript' charset="UTF-8" src='manifest_3d_tools.js'> </script>  
         <style>
-            body {font-size:18pt}
+            body {font-size:12pt}
             
             .canvas-width {width:960px;}
             .canvas-height {height:512px; }
@@ -72,7 +72,22 @@ function load_manifest()
 </script>
 </head>
 <body>
-        <div class="canvas-width" style="text-align:center">Prototype Manifest Loader</div>
+        <div class="canvas-width" style="text-align:center; font-size:16pt">Load 3D Model referenced in 3D Manifest</div>
+        
+        <div style="margin:1em;">
+        
+	<tr>
+		<td>URL to 3D-ish manifest</td>
+		<td>
+		<input style="width:60%;" type="url" id="manifest_url" 
+                        value="https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif"/>
+        </td>
+		<td><button type="button" onclick="load_manifest()">Load Manifest</button> </td>
+	</tr>
+</table>
+
+        </table>
+        </div>
         <div class="canvas-width canvas-height" style="margin-bottom:0px;">
         <x3d id="x3delem" class="canvas-width canvas-height"> 
         <scene>
@@ -86,14 +101,15 @@ function load_manifest()
     </scene>
         </x3d> 
         </div>
-
-<div>  
-<input style="width:100%;" type="url" id="manifest_url" 
-        value="https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif"/>
-</div>  
-<div>  
- <button type="button" onclick="load_manifest()">Load Manifest</button> 
- </div>        
+        
+<div style="margin-top:3em;">Example 3D Manifests from <a href="https://github.com/IIIF/3d/tree/main#readme">readme</a></div>
+<ul>
+<li>https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif</li>
+<li>https://bl-3d.netlify.app/collection/jane-austen-writing-desk/index.json</li> 
+<li>https://www.morphosource.org/manifests/8ff57219-27ff-4ccd-95bc-eb7cbe195539  
+<span style="color:red;">(X3DOM cannot parse the glb file which is the body of the Annotation)</span></li>
+</ul>
+      
         
 </body>
 </html>
