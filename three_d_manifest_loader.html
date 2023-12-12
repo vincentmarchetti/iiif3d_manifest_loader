@@ -29,6 +29,28 @@ function load_annotation_body( asset_url )
     {   
         target_element.setAttribute('url', asset_url);
     }    
+    
+}
+
+function fit_view()
+{
+    /*
+    This code for setting a view to show everything
+    after the model has downloaded was suggested
+    by discussion in https://github.com/x3dom/x3dom/issues/632
+    */
+    x3d_element = document.getElementById("x3delem");
+    
+    
+              
+            x3d_element.runtime.showAll();
+            x3d_element.addEventListener("downloadsfinished",
+                function()
+                {
+                    x3d_element.runtime.showAll();
+                }
+            );
+        
 }
 
 x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"); }
@@ -37,14 +59,14 @@ x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections
 <body>
         <div class="canvas-width" style="text-align:center">Prototype Manifest Loader</div>
         <div class="canvas-width canvas-height" style="margin-bottom:0px;">
-        <x3d class="canvas-width canvas-height"> 
+        <x3d id="x3delem" class="canvas-width canvas-height"> 
         <scene>
         <navigationinfo headlight='true'></navigationinfo>
         <background skyColor="0.9 0.9 1"></background>
         <viewpoint position="0 0 10" orientation="0 0 1 0" 
 	     centerOfRotation="0 0 0" ></viewpoint>
 	     <transform scale="1 1 1">
-	    <inline id='inline_entry' url=''></inline>
+	    <inline onload='fit_view()' id='inline_entry' url=''></inline>
 	    </transform>
     </scene>
         </x3d> 
