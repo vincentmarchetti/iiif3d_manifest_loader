@@ -64,9 +64,24 @@ function load_manifest()
                 model_url = anno.body.id;
                 console.log("loading " + model_url);
                 load_annotation_body( model_url );
+                load_manifest_view( manifest_obj );
                 });
             
 }
+
+
+function load_manifest_view( aManifest )
+{
+    manifest_view = document.querySelector("#manifest_view");
+    
+    if (aManifest.requiredStatement && aManifest.requiredStatement.value)
+    {
+        p = document.createElement("p");
+        p.appendChild( document.createTextNode( aManifest.requiredStatement.value.en[0] ));
+        manifest_view.appendChild(p)
+    }
+}
+
 
 //x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"); }
 </script>
@@ -101,7 +116,11 @@ function load_manifest()
     </scene>
         </x3d> 
         </div>
-        
+    
+    
+<div id="manifest_view"> </div>
+
+       
 <div style="margin-top:3em;">Example 3D Manifests from <a href="https://github.com/IIIF/3d/tree/main#readme">readme</a></div>
 <ul>
 <li>https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif</li>
