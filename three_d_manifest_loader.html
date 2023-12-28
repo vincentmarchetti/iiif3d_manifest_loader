@@ -82,6 +82,14 @@ function load_manifest_view( aManifest )
     }
 }
 
+window.addEventListener("load" , (event) => 
+{
+    const  schparams = new URLSearchParams(window.location.search);
+    manifest_url_field = document.getElementById("manifest_url");
+    manifest_url_field.value = schparams.get('url');
+    
+});
+
 
 //x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"); }
 </script>
@@ -94,7 +102,8 @@ function load_manifest_view( aManifest )
 	<tr>
 		<td>URL to 3D-ish manifest</td>
 		<td>
-		<input style="width:60%;" type="url" id="manifest_url" 
+		<input 
+		        style="width:60%;" type="url" id="manifest_url" 
                         value="https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif"/>
         </td>
 		<td><button type="button" onclick="load_manifest()">Load Manifest</button> </td>
@@ -107,7 +116,7 @@ function load_manifest_view( aManifest )
         <x3d id="x3delem" class="canvas-width canvas-height"> 
         <scene>
         <navigationinfo headlight='true'></navigationinfo>
-        <background skyColor="0.9 0.9 1"></background>
+        <background skyColor="0.8 0.8 0.8"></background>
         <viewpoint position="0 0 10" orientation="0 0 1 0" 
 	     centerOfRotation="0 0 0" ></viewpoint>
 	     <transform scale="1 1 1">
@@ -121,13 +130,6 @@ function load_manifest_view( aManifest )
 <div id="manifest_view"> </div>
 
        
-<div style="margin-top:3em;">Example 3D Manifests from <a href="https://github.com/IIIF/3d/tree/main#readme">readme</a></div>
-<ul>
-<li>https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif</li>
-<li>https://bl-3d.netlify.app/collection/jane-austen-writing-desk/index.json</li> 
-<li>https://www.morphosource.org/manifests/8ff57219-27ff-4ccd-95bc-eb7cbe195539  
-<span style="color:red;">(X3DOM cannot parse the glb file which is the body of the Annotation)</span></li>
-</ul>
       
         
 </body>
