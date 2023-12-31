@@ -1,16 +1,16 @@
 #! python
 
 
-MANIFEST_URL_BASE="http://localhost:8080/manifests_builder/dist/"
-LOADER_URL="http://localhost:8080/iiif3d_manifest_loader/three_d_manifest_loader.html"
+MANIFEST_URL_BASE="https://spri-open-resources.s3.us-east-2.amazonaws.com/iiif3dtsg/manifests/20231220/"
+LOADER_URL="three_d_manifest_loader.html"
 
 
 manifest_entries = [
-("Archimedes",    "archimedes.json", "build_archimedes.py"),
-("Saxaphone",     "saxphone.json",   "build_saxaphone.py"),
+#("Archimedes",    "archimedes.json", "build_archimedes.py"),
+("Saxophone",     "saxophone.json",   "build_saxophone.py"),
 ("Nun's cell",    "nuns_cell.json",  "build_nuns_cell.py"),
 ("Venus de Milo", "venus.json"    ,  "build_venus.py"),
-("Whale Skull" ,  "whale.json"    ,  "build_whale.py"),
+#("Whale Skull" ,  "whale.json"    ,  "build_whale.py"),
 ]
 
 import urllib.parse, posixpath
