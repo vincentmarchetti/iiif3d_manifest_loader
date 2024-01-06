@@ -19,18 +19,9 @@
             
             
         </style>
-
+<script src='manifesto/dist-umd/manifesto.js' type="application/javascript"></script>
 <script>
-function load_annotation_body( asset_url )
-{
-    console.log("enter load_annotation_body");
-    target_element = document.getElementById("inline_entry");
-    if (target_element != undefined)
-    {   
-        target_element.setAttribute('url', asset_url);
-    }    
-    
-}
+
 
 function fit_view()
 {
@@ -57,16 +48,13 @@ function load_manifest()
 {
     manifest_url_field = document.getElementById("manifest_url");
     var manifest_url = manifest_url_field.value;
-    fetch(manifest_url).then( response => response.json() )
-            .then(manifest_obj => {
-                console.log("received " + manifest_obj.type );
-                anno = SearchForModel( manifest_obj );
-                model_url = anno.body.id;
-                console.log("loading " + model_url);
-                load_annotation_body( model_url );
-                load_manifest_view( manifest_obj );
-                });
-            
+    
+    manifesto.loadManifest(manifest_url).then( (maanifest_json) => 
+	{
+    	const manifest = manifesto.parseManifest(maanifest_json);
+    	var label = manifest.getLabel().getValue("en");
+    	console.log("loaded manifest " + label);
+	}).catch( (error) => { console.warn("manifesto error: " + error)});
 }
 
 
