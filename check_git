@@ -1,0 +1,5 @@
+#! zsh
+echo "git status for iiif3d_manifest_loader"
+git status
+echo "git status for submodule manifesto"
+git -C manifesto status
