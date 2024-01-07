@@ -1,2 +1,5 @@
 .DS_Store
 manifesto
+node_modules
+package-lock.json
+public/manifesto.js
