@@ -30,6 +30,7 @@ function fit_view()
     after the model has downloaded was suggested
     by discussion in https://github.com/x3dom/x3dom/issues/632
     */
+    console.log("call into fit_view")
     x3d_element = document.getElementById("x3delem");
     
     
@@ -44,6 +45,63 @@ function fit_view()
         
 }
 
+
+function LoadAnnotationsRecursive(iterator)
+{	
+	
+	function func()
+	{
+		
+	}
+}
+
+// generator function
+function* AnnotationsFromManifest( manifest )
+{
+	for (const seq of manifest.getSequences())
+	{
+		const canv = seq.getCanvases()[0];
+		for (const anno of canv.getContent()) yield anno;
+	}
+}
+
+function LoadOneAnnotation(anno)
+{
+	var inlineElem = document.createElement('inline');
+	var target = anno.getTarget();
+	var body = anno.getBody()[0];
+	
+	var outerElement = undefined;
+	if (target.IsSpecificResource && target.getSelector().IsPointSelector )
+	{
+		
+		var sel = target.getSelector();
+		
+		var loc = target.getSelector().getLocation();
+		
+		outerElement = document.createElement('transform');
+		var positionString = `${loc.x} ${loc.y} ${loc.z}`
+		
+		outerElement.setAttribute("translation", positionString)
+		outerElement.appendChild(inlineElem);
+	}
+	else
+		outerElement = inlineElem;
+		
+	console.log("set to load " + body.id);
+	
+	//inlineElem.setAttribute('onload', 'fit_view()');
+	
+	var inline_container = document.getElementById( "inline-container");
+	if (inline_container)
+	{
+		inline_container.appendChild(outerElement);
+		//inlineElem.addEventListener('load', fit_view);
+		inlineElem.setAttribute('url', body.id);
+	}
+	else console.warn("inline-container not found");
+}
+
 function load_manifest()
 {
     manifest_url_field = document.getElementById("manifest_url");
@@ -54,6 +112,25 @@ function load_manifest()
     	const manifest = manifesto.parseManifest(maanifest_json);
     	var label = manifest.getLabel().getValue("en");
     	console.log("loaded manifest " + label);
+    	//var iterator = AnnotationsFromManifest(manifest);
+    	
+    	for (var anno of AnnotationsFromManifest(manifest))
+    	{
+    		LoadOneAnnotation(anno);
+    	}
+    	fit_view();
+    	var inline_container = document.getElementById( "inline-container");
+    	console.log(inline_container.innerHTML);
+    	//var anno0iter = iterator.next();
+    	//if (anno0iter.done)
+    	//{
+    	//	console.log("no annotations found");
+    	//}
+    	//else
+    	//{
+    		
+    	//	fit_view();
+    	//}
 	}).catch( (error) => { console.warn("manifesto error: " + error)});
 }
 
@@ -107,8 +184,8 @@ window.addEventListener("load" , (event) =>
         <background skyColor="0.8 0.8 0.8"></background>
         <viewpoint position="0 0 10" orientation="0 0 1 0" 
 	     centerOfRotation="0 0 0" ></viewpoint>
-	     <transform scale="1 1 1">
-	    <inline onload='fit_view()' id='inline_entry' url=''></inline>
+	     <transform id="inline-container" scale="1 1 1">
+	    
 	    </transform>
     </scene>
         </x3d> 
