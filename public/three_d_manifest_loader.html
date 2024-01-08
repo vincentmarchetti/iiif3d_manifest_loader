@@ -14,6 +14,8 @@
             {
                 border:2px solid black;
             }
+            
+            #manifest_label { margin-top:1em ; font-size:18pt; text-align:center; }
         </style>
 <script src='manifesto.js' type="application/javascript"></script>
 <script>
@@ -116,24 +118,17 @@ function load_manifest()
     	}
     	fit_view();
     	var inline_container = document.getElementById( "inline-container");
-    	console.log(inline_container.innerHTML);
-    	//var anno0iter = iterator.next();
-    	//if (anno0iter.done)
-    	//{
-    	//	console.log("no annotations found");
-    	//}
-    	//else
-    	//{
-    		
-    	//	fit_view();
-    	//}
+    	//console.log(inline_container.innerHTML);
+    	
+    	manifest_label = document.getElementById("manifest_label");
+    	manifest_label.innerText=label;
 	}).catch( (error) => { console.warn("manifesto error: " + error)});
 }
 
 
 function load_manifest_view( aManifest )
 {
-    manifest_view = document.querySelector("#manifest_view");
+    manifest_label = document.getElementById("manifest_label");
     
     if (aManifest.requiredStatement && aManifest.requiredStatement.value)
     {
@@ -156,24 +151,29 @@ window.addEventListener("load" , (event) =>
 </script>
 </head>
 <body>
-        <div class="canvas-width" style="text-align:center; font-size:16pt">Load 3D Model referenced in 3D Manifest</div>
+        <div class="canvas-width" style="text-align:center; font-size:16pt">Load 3D Manifest</div>
         
-        <div style="margin:1em;">
-        
-	<tr>
-		<td>URL to 3D-ish manifest</td>
-		<td>
-		<input 
-		        style="width:60%;" type="url" id="manifest_url" 
-                        value="https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif"/>
-        </td>
-		<td><button type="button" onclick="load_manifest()">Load Manifest</button> </td>
-	</tr>
-</table>
-
-        </table>
+        <div class="canvas-width" style="margin-top:1.5em">
+        <div style="font-size:10pt">
+        Manifest url
         </div>
-        <div class="canvas-width canvas-height" style="margin-bottom:0px;">
+        
+        <div style="width:100%; margin-top:0.3em;">
+        <input   style="width:100%; font-size:12pt"
+		         type="url" 
+		         id="manifest_url" 
+                 value="https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif"/>
+        </div>
+        
+        <div style="width:100%; margin-top:0.3em">
+        <button style="font-size:12pt" type="button" onclick="load_manifest()">Load Manifest</button> </td>
+        </div>
+        </div>
+
+
+        
+        
+        <div class="canvas-width canvas-height" style="margin-top:1em;">
         <x3d id="x3delem" class="canvas-width canvas-height"> 
         <scene>
         <navigationinfo headlight='true'></navigationinfo>
@@ -188,7 +188,7 @@ window.addEventListener("load" , (event) =>
         </div>
     
     
-<div id="manifest_view"> </div>
+<div class="canvas-width" id="manifest_label"> </div>
 
        
       
