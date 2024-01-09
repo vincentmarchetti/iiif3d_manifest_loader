@@ -6,7 +6,7 @@
         <link rel='stylesheet' type='text/css' href='https://x3dom.org/release/x3dom.css'></link> 
         <script type='text/javascript' charset="UTF-8" src='manifest_3d_tools.js'> </script>  
         <style>
-            body {font-size:12pt}
+            body {font-size:12pt; margin-left:2em; margin-right:2em;margin-top:1em;}
             
             .canvas-width {width:960px;}
             .canvas-height {height:512px; }
@@ -14,8 +14,10 @@
             {
                 border:2px solid black;
             }
-            
+            div {margin-top:1em;}
             #manifest_label { margin-top:1em ; font-size:18pt; text-align:center; }
+            
+            
         </style>
 <script src='manifesto.js' type="application/javascript"></script>
 <script>
@@ -40,7 +42,7 @@ function fit_view()
                     x3d_element.runtime.showAll();
                 }
             );
-        
+    
 }
 
 
@@ -146,13 +148,16 @@ window.addEventListener("load" , (event) =>
     
 });
 
-
-//x3dom.runtime.ready = function() { load_annotation_body("https://rpm-collections.s3.eu-west-2.amazonaws.com/e4fd82cfa63942218e1568a28efe46db.glb"); }
 </script>
 </head>
 <body>
         <div class="canvas-width" style="text-align:center; font-size:16pt">Load 3D Manifest</div>
         
+        <div class="canvas-width" style="font-size:12pt; line-height:1.5em">
+        Directions: Once url input field contains a url to a 3D-ish manifest, click the
+        Load Manifest button to initiate fetching the manifest, then fetching annotation
+        body content.
+        </div>
         <div class="canvas-width" style="margin-top:1.5em">
         <div style="font-size:10pt">
         Manifest url
@@ -161,12 +166,11 @@ window.addEventListener("load" , (event) =>
         <div style="width:100%; margin-top:0.3em;">
         <input   style="width:100%; font-size:12pt"
 		         type="url" 
-		         id="manifest_url" 
-                 value="https://www.rpm-api.io/records/5e7de766317ed200177bdeb7?_format=iiif"/>
+		         id="manifest_url"/>
         </div>
         
         <div style="width:100%; margin-top:0.3em">
-        <button style="font-size:12pt" type="button" onclick="load_manifest()">Load Manifest</button> </td>
+        <button style="font-size:12pt; border:black" type="button" onclick="load_manifest()">Load Manifest</button> </td>
         </div>
         </div>
 
