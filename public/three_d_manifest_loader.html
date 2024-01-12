@@ -15,187 +15,77 @@
                 border:2px solid black;
             }
             div {margin-top:1em;}
-            #manifest_label { margin-top:1em ; font-size:18pt; text-align:center; }
+            #manifest_label_container { margin-top:1em ; font-size:18pt; text-align:center; }
             
             
         </style>
-<script src='manifesto.js' type="application/javascript"></script>
+<script src="manifesto.js"                  type="application/javascript"></script>
+<script src="x3dom_helper.js"               type="application/javascript"></script>
+<script src="three_d_manifest_loader.js"    type="application/javascript"></script>
 <script>
-
-
-function fit_view()
-{
-    /*
-    This code for setting a view to show everything
-    after the model has downloaded was suggested
-    by discussion in https://github.com/x3dom/x3dom/issues/632
-    */
-    console.log("call into fit_view")
-    x3d_element = document.getElementById("x3delem");
-    
-    
-              
-            x3d_element.runtime.showAll();
-            x3d_element.addEventListener("downloadsfinished",
-                function()
-                {
-                    x3d_element.runtime.showAll();
-                }
-            );
-    
-}
-
-
-function LoadAnnotationsRecursive(iterator)
-{	
-	
-	function func()
-	{
-		
-	}
-}
-
-// generator function
-function* AnnotationsFromManifest( manifest )
-{
-	for (const seq of manifest.getSequences())
-	{
-		const canv = seq.getCanvases()[0];
-		for (const anno of canv.getContent()) yield anno;
-	}
-}
-
-function LoadOneAnnotation(anno)
-{
-	var inlineElem = document.createElement('inline');
-	var target = anno.getTarget();
-	var body = anno.getBody()[0];
-	
-	var outerElement = undefined;
-	if (target.IsSpecificResource && target.getSelector().IsPointSelector )
-	{
-		
-		var sel = target.getSelector();
-		
-		var loc = target.getSelector().getLocation();
-		
-		outerElement = document.createElement('transform');
-		var positionString = `${loc.x} ${loc.y} ${loc.z}`
-		
-		outerElement.setAttribute("translation", positionString)
-		outerElement.appendChild(inlineElem);
-	}
-	else
-		outerElement = inlineElem;
-		
-	console.log("set to load " + body.id);
-	
-	//inlineElem.setAttribute('onload', 'fit_view()');
-	
-	var inline_container = document.getElementById( "inline-container");
-	if (inline_container)
-	{
-		inline_container.appendChild(outerElement);
-		//inlineElem.addEventListener('load', fit_view);
-		inlineElem.setAttribute('url', body.id);
-	}
-	else console.warn("inline-container not found");
-}
-
-function load_manifest()
-{
-    manifest_url_field = document.getElementById("manifest_url");
-    var manifest_url = manifest_url_field.value;
-    
-    manifesto.loadManifest(manifest_url).then( (maanifest_json) => 
-	{
-    	const manifest = manifesto.parseManifest(maanifest_json);
-    	var label = manifest.getLabel().getValue("en");
-    	console.log("loaded manifest " + label);
-    	//var iterator = AnnotationsFromManifest(manifest);
-    	
-    	for (var anno of AnnotationsFromManifest(manifest))
-    	{
-    		LoadOneAnnotation(anno);
-    	}
-    	fit_view();
-    	var inline_container = document.getElementById( "inline-container");
-    	//console.log(inline_container.innerHTML);
-    	
-    	manifest_label = document.getElementById("manifest_label");
-    	manifest_label.innerText=label;
-	}).catch( (error) => { console.warn("manifesto error: " + error)});
-}
-
-
-function load_manifest_view( aManifest )
-{
-    manifest_label = document.getElementById("manifest_label");
-    
-    if (aManifest.requiredStatement && aManifest.requiredStatement.value)
-    {
-        p = document.createElement("p");
-        p.appendChild( document.createTextNode( aManifest.requiredStatement.value.en[0] ));
-        manifest_view.appendChild(p)
-    }
-}
-
+/// window onload handler to set up the interactive functions
+/// on loading, extracts a manifest url encoded as a query 'url' parameter in the
+/// document url passed to browser from server
+/// this manifest_url is stored as the value in a HTML element assumed to be an input element, type 'url'
+/// Adds an event handler to the "Load Manifest" button that calls LoadManifest
 window.addEventListener("load" , (event) => 
 {
     const  schparams = new URLSearchParams(window.location.search);
-    manifest_url_field = document.getElementById("manifest_url");
-    manifest_url_field.value = schparams.get('url');
+    manifest_url_textbox = document.getElementById("manifest_url_textbox");
+    manifest_url_textbox.value = schparams.get('url');
     
+    load_manifest_button = document.getElementById("load_manifest_button");
+    load_manifest_button.addEventListener("click", (event) =>
+    {
+        var manifest_url = manifest_url_textbox.value;
+        var annotation_container = document.getElementById("annotation_container");
+        var manifest_label_container = document.getElementById("manifest_label_container");
+        LoadManifest(manifest_url, annotation_container, manifest_label_container);
+    });
 });
-
 </script>
 </head>
 <body>
-        <div class="canvas-width" style="text-align:center; font-size:16pt">Load 3D Manifest</div>
-        
-        <div class="canvas-width" style="font-size:12pt; line-height:1.5em">
-        Directions: Once url input field contains a url to a 3D-ish manifest, click the
-        Load Manifest button to initiate fetching the manifest, then fetching annotation
-        body content.
-        </div>
-        <div class="canvas-width" style="margin-top:1.5em">
-        <div style="font-size:10pt">
-        Manifest url
-        </div>
-        
-        <div style="width:100%; margin-top:0.3em;">
-        <input   style="width:100%; font-size:12pt"
-		         type="url" 
-		         id="manifest_url"/>
-        </div>
-        
-        <div style="width:100%; margin-top:0.3em">
-        <button style="font-size:12pt; border:black" type="button" onclick="load_manifest()">Load Manifest</button> </td>
-        </div>
-        </div>
+<div class="canvas-width" style="text-align:center; font-size:16pt">Load 3D Manifest</div>
 
+<div class="canvas-width" style="font-size:12pt; line-height:1.5em">
+Directions: Once url input field contains a url to a 3D-ish manifest, click the
+Load Manifest button to initiate fetching the manifest, then fetching annotation
+body content.
+</div>
+<div class="canvas-width" style="margin-top:1.5em">
+<div style="font-size:10pt">
+Manifest url
+</div>
 
-        
-        
-        <div class="canvas-width canvas-height" style="margin-top:1em;">
-        <x3d id="x3delem" class="canvas-width canvas-height"> 
-        <scene>
-        <navigationinfo headlight='true'></navigationinfo>
-        <background skyColor="0.8 0.8 0.8"></background>
-        <viewpoint position="0 0 10" orientation="0 0 1 0" 
-	     centerOfRotation="0 0 0" ></viewpoint>
-	     <transform id="inline-container" scale="1 1 1">
-	    
-	    </transform>
-    </scene>
-        </x3d> 
-        </div>
-    
-    
-<div class="canvas-width" id="manifest_label"> </div>
+<div style="width:100%; margin-top:0.3em;">
+<input   style="width:100%; font-size:12pt"
+         type="url" 
+         id="manifest_url_textbox"/>
+</div>
 
-       
-      
-        
+<div style="width:100%; margin-top:0.3em">
+<button id="load_manifest_button" 
+        style="font-size:12pt; border:black" 
+        type="button">Load Manifest</button> </td>
+</div>
+</div>
+
+<div class="canvas-width canvas-height" style="margin-top:1em;">
+<x3d id="x3delem" class="canvas-width canvas-height"> 
+<scene>
+<navigationinfo headlight='true'></navigationinfo>
+<background skyColor="0.8 0.8 0.8"></background>
+<viewpoint position="0 0 10" orientation="0 0 1 0" 
+ centerOfRotation="0 0 0" ></viewpoint>
+ <transform id="annotation_container" scale="1 1 1">
+
+</transform>
+</scene>
+</x3d> 
+</div>
+
+<div class="canvas-width" id="manifest_label_container"> </div>
+
 </body>
 </html>
