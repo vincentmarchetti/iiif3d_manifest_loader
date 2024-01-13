@@ -6,6 +6,7 @@ LOADER_URL="three_d_manifest_loader.html"
 
 
 manifest_entries = [
+("Astronaut",    "astronaut.json",   "build_astronaut.py"),
 ("Archimedes",    "archimedes.json", "build_archimedes.py"),
 ("Saxophone",     "saxophone.json",   "build_saxophone.py"),
 ("Nun's cell",    "nuns_cell.json",  "build_nuns_cell.py"),
