@@ -7,7 +7,6 @@ else
 	echo "ready to clone manifesto"
 	git clone git@github.com:vincentmarchetti/manifesto.git
 	cd manifesto
-	git branch kshell-main
 	git checkout kshell-main
 	git pull --set-upstream origin kshell-main
 	npm install
